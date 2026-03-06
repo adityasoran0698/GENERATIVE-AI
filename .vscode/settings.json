@@ -1,0 +1,10 @@
+{
+  "python.analysis.reportMissingImports": false,
+  "python.analysis.reportMissingModuleSource": false,
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnPaste": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
