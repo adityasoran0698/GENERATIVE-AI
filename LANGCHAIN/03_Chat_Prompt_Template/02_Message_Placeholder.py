@@ -12,7 +12,6 @@ chat_history = []
 with open("MessageHistory.txt", "r") as f:
     chat_history.extend(f.readlines())
 
-
 prompt = chat_template.invoke({"chat_history": chat_history})
 
 print(prompt)

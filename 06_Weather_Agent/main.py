@@ -40,7 +40,7 @@ class MyOutputFormat(BaseModel):
 
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), base_url=os.getenv("BASE_URL"))
+client = OpenAI()
 available_tools = {"get_weather": get_weather, "run_command": run_command}
 SYSTEM_PROMPT = """
 Your name is Bixie, an expert AI assistant in resolving user queries using chain of thought.
@@ -152,10 +152,9 @@ while True:
 
     while True:
         response = client.chat.completions.parse(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             messages=messages_history,
             response_format=MyOutputFormat,
-            tool_choice="auto",  # ← IMPORTANT
         )
         raw_data = response.choices[0].message.content
         parsed_data = response.choices[0].message.parsed
