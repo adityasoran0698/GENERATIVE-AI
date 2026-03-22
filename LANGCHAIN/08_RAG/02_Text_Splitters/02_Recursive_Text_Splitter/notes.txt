@@ -1,0 +1,220 @@
+RecursiveCharacterTextSplitter - Easy Notes**
+
+
+ -What is RecursiveCharacterTextSplitter?
+
+It is a tool in LangChain used to **split large text into smaller chunks**.
+
+👉 Why needed?
+
+* LLMs (like GPT) cannot process very large text at once
+* So we break text into **small manageable pieces (chunks)**
+
+### 🔹 Why "Recursive"?
+
+The word **recursive** means:
+
+👉 It tries to split text step-by-step using different separators until it gets the desired chunk size.
+
+ How it Works (Step-by-Step)
+
+It uses a list of separators like:
+
+```
+["\n\n", "\n", " ", ""]
+```
+
+Then it follows this process:
+
+1. Try to split using **"\n\n" (paragraphs)**
+2. If chunk is still too big → split using **"\n" (lines)**
+3. If still big → split using **" " (words)**
+4. If still big → split using **"" (characters)**
+
+👉 That’s why it is called *recursive* (keeps trying again and again)
+
+---
+
+### 🔹 Important Parameters
+
+1. **chunk_size**
+
+   * Maximum size of each chunk
+   * Example: 100 characters
+
+2. **chunk_overlap**
+
+   * Some part of previous chunk is repeated in next chunk
+   * Helps maintain context
+
+Exmample:-
+
+
+## 🔹 Given Text
+
+My name is Nitish
+I am 35 years old
+
+I live in Gurgaon
+How are you
+
+## 🔹 Step 1: Split by Paragraph (`\n\n`)
+
+### 👉 What happens?
+
+* Text is divided wherever there is an empty line (double newline)
+
+### 👉 Result:
+
+1. My name is Nitish 
+   I am 35 years old
+
+2. I live in Gurgaon 
+   How are you
+
+### 👉 Check:
+
+* Each part is still **greater than 10 characters**
+
+### 👉 Conclusion:
+
+* Cannot use as final chunks → move to next step
+
+---
+
+## 🔹 Step 2: Split by Line (`\n`)
+
+### 👉 What happens?
+
+* Each paragraph is further split into individual lines
+
+### 👉 Result:
+
+1. My name is Nitish
+2. I am 35 years old
+3. I live in Gurgaon
+4. How are you
+
+### 👉 Check:
+
+* Each line length > 10
+
+### 👉 Conclusion:
+
+* Still too large → move to next step
+
+---
+
+## 🔹 Step 3: Split by Words (space `" "`)
+
+### 👉 What happens?
+
+* Each line is broken into words
+* Then words are **combined carefully** so chunk ≤ 10
+
+
+### ✔ Line 1: "My name is Nitish"
+
+**Words:**
+My | name | is | Nitish
+
+**Combining:**
+
+* Start with empty chunk
+* Add "My" → ok
+* Add "name" → "My name" (ok)
+* Add "is" → "My name is" (10 chars ✅)
+* Try adding "Nitish" → exceeds limit ❌
+
+**Result:**
+
+* Chunk 1 → My name is
+* Chunk 2 → Nitish
+
+---
+
+### ✔ Line 2: "I am 35 years old"
+
+**Words:**
+I | am | 35 | years | old
+
+**Sub-step:**
+
+* "I am 35" → 8 chars ✅
+
+* Add "years" → exceeds ❌
+  → new chunk
+
+* "years old" → 9 chars ✅
+
+**Result:**
+
+* I am 35
+* years old
+
+---
+
+### ✔ Line 3: "I live in Gurgaon"
+
+**Words:**
+I | live | in | Gurgaon
+
+**Sub-step:**
+
+* "I live in" → 9 chars ✅
+* Add "Gurgaon" → exceeds ❌
+
+**Result:**
+
+* I live in
+* Gurgaon
+
+---
+
+### ✔ Line 4: "How are you"
+
+**Words:**
+How | are | you
+
+**Sub-step:**
+
+* "How are" → 7 chars ✅
+* Add "you" → exceeds ❌
+
+**Result:**
+
+* How are
+* you
+
+## 🔹 Final Output
+
+1. My name is
+2. Nitish
+3. I am 35
+4. years old
+5. I live in
+6. Gurgaon
+7. How are
+8. you
+
+---
+
+## 🔹 Important Understanding
+
+* It tries **largest separator first** (paragraph)
+* Then goes to **smaller ones step-by-step**
+* At word level:
+  * Builds chunk gradually
+  * Stops before exceeding limit
+* Only uses character split if necessary
+
+
+## 🔹 Final Summary
+
+RecursiveCharacterTextSplitter:
+
+* Works in levels: paragraph → line → word → character
+* Checks size at every step
+* Splits only when needed
+* Maintains meaningful chunks
+
