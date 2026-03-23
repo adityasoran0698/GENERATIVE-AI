@@ -10,6 +10,12 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Auto Push to GitHub",
+      "type": "shell",
+      "command": "git add .; git commit -m \"Uploaded!\"; git push",
+      "problemMatcher": []
     }
   ]
 }
