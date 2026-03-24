@@ -35,10 +35,12 @@ docs = [doc1, doc2, doc3, doc4, doc5]
 vector_store = Chroma.from_documents(
     documents=docs,
     embedding=OpenAIEmbeddings(model="text-embedding-3-large"),
-    collection_name="Sample",
 )
 query = input("You: ")
-retriever = vector_store.as_retriever(kwargs={"k": 3})
+retriever = vector_store.as_retriever(
+    search_type="mmr",
+    search_kwargs={"k": 3,"lambda_mult":0}
+)
 results = retriever.invoke(query)
 for i, doc in enumerate(results):
     print(f"-----Result {i+1}-----")
