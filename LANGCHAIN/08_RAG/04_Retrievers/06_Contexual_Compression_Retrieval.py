@@ -104,5 +104,5 @@ After Contextual Compression:
 
 4. Final Summary
 
-Contextual Compression Retriever improves retrieval by filtering out unnecessary information and returning only the most relevant content, making responses more accurate, efficient, and cost-effective.
+Contextual Compression Retriever Improves retrieval by filtering out unnecessary information and returning only the most relevant content, making responses more accurate, efficient, and cost-effective.
 """
