@@ -7,5 +7,5 @@ from langchain_community.tools import DuckDuckGoSearchRun, ShellTool
 
 shell_tool = ShellTool()
 
-result2 = shell_tool.invoke("")
+result2 = shell_tool.invoke("whoami")
 print(result2)
