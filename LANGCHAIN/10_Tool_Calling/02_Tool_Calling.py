@@ -21,6 +21,6 @@ llm_with_tools = llm.bind_tools([multiply])
 
 # Tool Calling 
 result=llm_with_tools.invoke("Multiply 8 by 67")
-# print(result)
-# print(result.tool_calls[0])
+print(result)
+print(result.tool_calls[0])
 
