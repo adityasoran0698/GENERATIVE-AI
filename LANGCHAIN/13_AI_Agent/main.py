@@ -3,6 +3,7 @@ from langchain_classic import hub
 from langchain_openai import ChatOpenAI
 from langchain_community.tools import DuckDuckGoSearchRun, tool
 import requests
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -18,11 +19,20 @@ def get_weather(city: str) -> str:
     return data.json()
 
 
+@tool
+def run_command(cmd: str) -> str:
+    "This function runs a command on my Windows system powershell. Use powershell commands only"
+    result = os.system(cmd)
+    return result
+
+
 llm = ChatOpenAI(model="gpt-4o-mini")
 prompt = hub.pull("hwchase17/react")
-agent = create_react_agent(llm=llm, tools=[search_tool, get_weather], prompt=prompt)
+agent = create_react_agent(
+    llm=llm, tools=[search_tool, get_weather, run_command], prompt=prompt
+)
 agent_executer = AgentExecutor(
-    agent=agent, tools=[search_tool, get_weather], verbose=True
+    agent=agent, tools=[search_tool, get_weather, run_command], verbose=True
 )
 query = input("You: ")
 result = agent_executer.invoke({"input": query})
