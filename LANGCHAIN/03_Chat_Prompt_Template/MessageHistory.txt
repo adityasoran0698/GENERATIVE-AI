@@ -1,1 +1,0 @@
-[HumanMessage(content='Where is my refund?', additional_kwargs={}, response_metadata={})AIMessage(content='The refund is initiated. It will be reflected in your account in 3 to 5 days', additional_kwargs={}, response_metadata={})]
